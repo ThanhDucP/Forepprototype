@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router';
 import { CheckCircle, Lock, Circle, BookOpen, TrendingUp } from 'lucide-react';
+import Layout from '../../components/Layout';
 
 export default function Career() {
   const navigate = useNavigate();
