@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Plus, Eye, Edit, X, CheckCircle, TrendingUp } from 'lucide-react';
-import Dialog from '../../components/Dialog';
+import { Dialog } from '../../components/Dialog';
 
 export default function Programs() {
   const [showNewProgramDialog, setShowNewProgramDialog] = useState(false);
