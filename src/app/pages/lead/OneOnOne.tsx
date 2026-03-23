@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Calendar, Clock, ChevronDown, ChevronUp, Plus, X } from 'lucide-react';
-import Dialog from '../../components/Dialog';
+import { Dialog } from '../../components/Dialog';
 
 export default function OneOnOne() {
   const [expandedMeeting, setExpandedMeeting] = useState<number | null>(null);
