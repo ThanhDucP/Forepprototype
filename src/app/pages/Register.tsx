@@ -36,7 +36,7 @@ export default function Register() {
             <Building2 className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-3xl mb-2">Đăng ký tài khoản</h1>
-          <p className="text-gray-600">Tạo tài khoản mới</p>
+          <p className="text-gray-600">Tạo tài khoản FOREP</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -83,10 +83,9 @@ export default function Register() {
               onChange={(e) => setRole(e.target.value as UserRole)}
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="employee">Nhân viên</option>
-              <option value="manager">Quản lý</option>
+              <option value="employee">Employee</option>
+              <option value="lead">Lead</option>
               <option value="hr">HR</option>
-              <option value="ceo">CEO</option>
             </select>
           </div>
 

@@ -4,13 +4,14 @@ import { useAuth } from '../context/AuthContext';
 import { 
   LayoutDashboard, 
   Users, 
-  Clock, 
+  Activity, 
   TrendingUp, 
   GraduationCap, 
   Route, 
-  DollarSign,
+  Layers,
   Building2,
-  Settings,
+  BookOpen,
+  MessageSquare,
   LogOut,
   Menu,
   X
@@ -42,40 +43,25 @@ export default function Layout({ children }: LayoutProps) {
       case 'employee':
         return [
           ...baseItems,
-          { icon: Clock, label: 'Chấm công', path: '/employee/attendance' },
+          { icon: Activity, label: 'Work Profile', path: '/employee/work-profile' },
           { icon: TrendingUp, label: 'Hiệu suất', path: '/employee/performance' },
-          { icon: GraduationCap, label: 'Đào tạo', path: '/employee/learning' },
-          { icon: Route, label: 'Lộ trình nghề nghiệp', path: '/employee/career' },
-          { icon: DollarSign, label: 'Lương & Thưởng', path: '/employee/payroll' },
+          { icon: Layers, label: 'Kỹ năng', path: '/employee/skills' },
+          { icon: GraduationCap, label: 'Học tập', path: '/employee/learning' },
+          { icon: Route, label: 'Lộ trình', path: '/employee/career' },
         ];
-      case 'manager':
+      case 'lead':
         return [
           ...baseItems,
-          { icon: Users, label: 'Quản lý team', path: '/manager/team' },
-          { icon: Clock, label: 'Chấm công', path: '/employee/attendance' },
-          { icon: TrendingUp, label: 'Hiệu suất cá nhân', path: '/employee/performance' },
-          { icon: Route, label: 'Lộ trình nghề nghiệp', path: '/employee/career' },
+          { icon: Users, label: 'Team của tôi', path: '/lead/team' },
+          { icon: MessageSquare, label: '1:1 Meetings', path: '/lead/one-on-one' },
         ];
       case 'hr':
         return [
           ...baseItems,
-          { icon: Users, label: 'Quản lý nhân sự', path: '/hr/employees' },
+          { icon: Users, label: 'Nhân sự', path: '/hr/employees' },
+          { icon: Layers, label: 'Skill Framework', path: '/hr/skill-framework' },
+          { icon: BookOpen, label: 'Chương trình đào tạo', path: '/hr/programs' },
           { icon: Building2, label: 'Sơ đồ tổ chức', path: '/hr/org-chart' },
-          { icon: DollarSign, label: 'Quản lý lương', path: '/hr/payroll' },
-          { icon: Clock, label: 'Chấm công', path: '/employee/attendance' },
-        ];
-      case 'ceo':
-        return [
-          ...baseItems,
-          { icon: Users, label: 'Quản lý HR', path: '/hr/employees' },
-          { icon: Building2, label: 'Sơ đồ tổ chức', path: '/hr/org-chart' },
-          { icon: Route, label: 'Lộ trình nghề nghiệp', path: '/employee/career' },
-        ];
-      case 'admin':
-        return [
-          ...baseItems,
-          { icon: Users, label: 'Quản lý người dùng', path: '/admin/dashboard' },
-          { icon: Settings, label: 'Cấu hình hệ thống', path: '/admin/dashboard' },
         ];
       default:
         return baseItems;
@@ -100,7 +86,7 @@ export default function Layout({ children }: LayoutProps) {
             >
               {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
-            <h1 className="text-xl">HRM System</h1>
+            <h1 className="text-xl">FOREP</h1>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">

@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
-export type UserRole = 'employee' | 'manager' | 'hr' | 'ceo' | 'admin';
+export type UserRole = 'employee' | 'lead' | 'hr';
 
 export interface User {
   id: string;
@@ -10,8 +10,8 @@ export interface User {
   avatar?: string;
   department?: string;
   position?: string;
+  level?: string;
   managerId?: string;
-  branchId?: string;
 }
 
 interface AuthContextType {
@@ -30,43 +30,25 @@ const mockUsers: User[] = [
     email: 'employee@demo.com',
     name: 'Nguyễn Văn An',
     role: 'employee',
-    department: 'Phát triển sản phẩm',
+    department: 'Engineering',
     position: 'Frontend Developer',
-    branchId: 'HN01'
+    level: 'Mid'
   },
   {
     id: '2',
-    email: 'manager@demo.com',
+    email: 'lead@demo.com',
     name: 'Trần Thị Bình',
-    role: 'manager',
-    department: 'Phát triển sản phẩm',
-    position: 'Team Lead',
-    branchId: 'HN01'
+    role: 'lead',
+    department: 'Engineering',
+    position: 'Team Lead'
   },
   {
     id: '3',
     email: 'hr@demo.com',
     name: 'Lê Văn Cường',
     role: 'hr',
-    department: 'Nhân sự',
-    position: 'HR Manager',
-    branchId: 'HN01'
-  },
-  {
-    id: '4',
-    email: 'ceo@demo.com',
-    name: 'Phạm Thị Dung',
-    role: 'ceo',
-    department: 'Ban lãnh đạo',
-    position: 'CEO',
-  },
-  {
-    id: '5',
-    email: 'admin@demo.com',
-    name: 'Hoàng Văn Admin',
-    role: 'admin',
-    department: 'IT',
-    position: 'System Administrator',
+    department: 'HR',
+    position: 'HR Manager'
   }
 ];
 

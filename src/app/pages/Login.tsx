@@ -36,10 +36,8 @@ export default function Login() {
   const quickLogin = (role: string) => {
     const credentials: Record<string, { email: string; password: string }> = {
       employee: { email: 'employee@demo.com', password: 'demo' },
-      manager: { email: 'manager@demo.com', password: 'demo' },
+      lead: { email: 'lead@demo.com', password: 'demo' },
       hr: { email: 'hr@demo.com', password: 'demo' },
-      ceo: { email: 'ceo@demo.com', password: 'demo' },
-      admin: { email: 'admin@demo.com', password: 'demo' },
     };
     
     const cred = credentials[role];
@@ -54,8 +52,8 @@ export default function Login() {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-4">
             <Building2 className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-3xl mb-2">HRM System</h1>
-          <p className="text-gray-600">Đăng nhập vào hệ thống</p>
+          <h1 className="text-3xl mb-2">FOREP</h1>
+          <p className="text-gray-600">Personal Workforce & Learning System</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -107,36 +105,24 @@ export default function Login() {
         {/* Quick login demo */}
         <div className="mt-8 pt-6 border-t border-gray-200">
           <p className="text-xs text-gray-500 mb-3 text-center">Demo - Đăng nhập nhanh:</p>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-3 gap-2">
             <button
               onClick={() => quickLogin('employee')}
               className="px-3 py-2 text-sm bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
             >
-              Nhân viên
+              Employee
             </button>
             <button
-              onClick={() => quickLogin('manager')}
+              onClick={() => quickLogin('lead')}
               className="px-3 py-2 text-sm bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
             >
-              Manager
+              Lead
             </button>
             <button
               onClick={() => quickLogin('hr')}
               className="px-3 py-2 text-sm bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
             >
               HR
-            </button>
-            <button
-              onClick={() => quickLogin('ceo')}
-              className="px-3 py-2 text-sm bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
-            >
-              CEO
-            </button>
-            <button
-              onClick={() => quickLogin('admin')}
-              className="px-3 py-2 text-sm bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
-            >
-              Admin
             </button>
           </div>
         </div>

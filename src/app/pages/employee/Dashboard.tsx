@@ -1,221 +1,233 @@
-import Layout from '../../components/Layout';
-import { useAuth } from '../../context/AuthContext';
-import { useNavigate } from 'react-router';
-import { 
-  Clock, 
-  TrendingUp, 
-  Calendar, 
-  Award,
-  Target,
-  ArrowUp,
-  ArrowDown,
-  AlertCircle,
-  CheckCircle
-} from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-
-const performanceData = [
-  { month: 'T1', score: 75 },
-  { month: 'T2', score: 78 },
-  { month: 'T3', score: 82 },
-  { month: 'T4', score: 85 },
-  { month: 'T5', score: 88 },
-  { month: 'T6', score: 92 },
-];
-
-const recentActivities = [
-  { id: 1, type: 'success', message: 'Hoàn thành KPI tháng 6 đạt 92%', time: '2 giờ trước' },
-  { id: 2, type: 'info', message: 'Có 1 khóa học mới được đề xuất', time: '5 giờ trước' },
-  { id: 3, type: 'warning', message: 'Còn 3 ngày phép chưa sử dụng', time: '1 ngày trước' },
-  { id: 4, type: 'success', message: 'Nhận được phản hồi tích cực từ manager', time: '2 ngày trước' },
-];
+import { TrendingUp, Activity, Layers, Flame } from 'lucide-react';
 
 export default function EmployeeDashboard() {
-  const { user } = useAuth();
-  const navigate = useNavigate();
+  // Mock data for work items
+  const workItems = [
+    {
+      source: 'JIRA',
+      sourceBadgeColor: 'bg-blue-500',
+      task: 'Implement infinite scroll for feed component',
+      type: 'Feature',
+      typeColor: 'bg-blue-100 text-blue-700',
+      skills: ['React', 'TypeScript'],
+      difficulty: 'High',
+      difficultyColor: 'bg-red-100 text-red-700',
+      timeSpent: '4.5h',
+      impact: 'shipped'
+    },
+    {
+      source: 'GIT',
+      sourceBadgeColor: 'bg-gray-800',
+      task: 'PR Review: auth flow refactor',
+      type: 'Code Review',
+      typeColor: 'bg-purple-100 text-purple-700',
+      skills: ['System Design'],
+      difficulty: 'Medium',
+      difficultyColor: 'bg-yellow-100 text-yellow-700',
+      timeSpent: '1h',
+      impact: '3 issues found'
+    },
+    {
+      source: 'JIRA',
+      sourceBadgeColor: 'bg-blue-500',
+      task: 'Fix timezone bug in attendance display',
+      type: 'Bug Fix',
+      typeColor: 'bg-red-100 text-red-700',
+      skills: ['JavaScript'],
+      difficulty: 'Low',
+      difficultyColor: 'bg-green-100 text-green-700',
+      timeSpent: '0.5h',
+      impact: 'fixed'
+    },
+    {
+      source: 'GIT',
+      sourceBadgeColor: 'bg-gray-800',
+      task: 'Refactor API layer to use React Query',
+      type: 'Feature',
+      typeColor: 'bg-blue-100 text-blue-700',
+      skills: ['React', 'API Design'],
+      difficulty: 'High',
+      difficultyColor: 'bg-red-100 text-red-700',
+      timeSpent: '6h',
+      impact: '-40% load time'
+    },
+    {
+      source: 'SLACK',
+      sourceBadgeColor: 'bg-purple-500',
+      task: 'Tech design discussion: microservices migration',
+      type: 'Meeting',
+      typeColor: 'bg-gray-100 text-gray-700',
+      skills: ['System Design'],
+      difficulty: 'Medium',
+      difficultyColor: 'bg-yellow-100 text-yellow-700',
+      timeSpent: '1.5h',
+      impact: 'decision made'
+    }
+  ];
+
+  const aiInsights = [
+    {
+      icon: '🔥',
+      message: 'Bạn làm 2 task khó liên tiếp tốt — đang trong vùng growth'
+    },
+    {
+      icon: '📈',
+      message: 'React skill tăng rõ rệt từ công việc thực tế. Đang tiến gần L4.'
+    },
+    {
+      icon: '⚡',
+      message: 'System Design còn gap 10pts để lên Senior. Task review vừa rồi đang lấp dần.'
+    }
+  ];
 
   return (
-    <Layout>
-      <div className="space-y-6">
-        {/* Welcome */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-8 text-white">
-          <h1 className="text-3xl mb-2">Xin chào, {user?.name}! 👋</h1>
-          <p className="text-blue-100">Chúc bạn có một ngày làm việc hiệu quả</p>
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl mb-2">Dashboard</h1>
+          <p className="text-gray-600">Work intelligence — tự động từ công việc thực tế</p>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Clock className="w-6 h-6 text-blue-600" />
+        {/* Stats Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+            <div className="flex items-start justify-between mb-2">
+              <div>
+                <p className="text-sm text-gray-600">Performance Score</p>
+                <div className="flex items-baseline gap-2">
+                  <p className="text-3xl">87</p>
+                  <span className="text-sm text-gray-500">pts</span>
+                </div>
               </div>
-              <span className="flex items-center gap-1 text-green-600 text-sm">
-                <ArrowUp className="w-4 h-4" />
-                5%
-              </span>
+              <div className="bg-green-100 p-2 rounded-lg">
+                <TrendingUp className="w-5 h-5 text-green-600" />
+              </div>
             </div>
-            <div className="text-2xl mb-1">168h</div>
-            <div className="text-sm text-gray-600">Giờ làm tháng này</div>
+            <p className="text-xs text-gray-500">Output / (Effort × Difficulty)</p>
+            <p className="text-xs text-green-600 mt-1">+5 vs tuần trước</p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-green-600" />
+          <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+            <div className="flex items-start justify-between mb-2">
+              <div>
+                <p className="text-sm text-gray-600">Tasks captured</p>
+                <div className="flex items-baseline gap-2">
+                  <p className="text-3xl">12</p>
+                  <span className="text-sm text-gray-500">tasks</span>
+                </div>
               </div>
-              <span className="flex items-center gap-1 text-green-600 text-sm">
-                <ArrowUp className="w-4 h-4" />
-                8%
-              </span>
+              <div className="bg-blue-100 p-2 rounded-lg">
+                <Activity className="w-5 h-5 text-blue-600" />
+              </div>
             </div>
-            <div className="text-2xl mb-1">92%</div>
-            <div className="text-sm text-gray-600">Hiệu suất KPI</div>
+            <p className="text-xs text-gray-500">auto từ Jira, Git</p>
+            <p className="text-xs text-gray-600 mt-1">8 feature / 3 review / 1 meeting</p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <Calendar className="w-6 h-6 text-purple-600" />
+          <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+            <div className="flex items-start justify-between mb-2">
+              <div>
+                <p className="text-sm text-gray-600">Skill đang tăng</p>
+                <div className="flex items-baseline gap-2">
+                  <p className="text-xl">React</p>
+                </div>
+              </div>
+              <div className="bg-purple-100 p-2 rounded-lg">
+                <Layers className="w-5 h-5 text-purple-600" />
               </div>
             </div>
-            <div className="text-2xl mb-1">3 ngày</div>
-            <div className="text-sm text-gray-600">Phép năm còn lại</div>
+            <p className="text-xs text-gray-500">L3 → L4</p>
+            <p className="text-xs text-purple-600 mt-1">+1 level tuần này</p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                <Award className="w-6 h-6 text-yellow-600" />
+          <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+            <div className="flex items-start justify-between mb-2">
+              <div>
+                <p className="text-sm text-gray-600">Learning streak</p>
+                <div className="flex items-baseline gap-2">
+                  <p className="text-3xl">14</p>
+                  <span className="text-sm text-gray-500">ngày</span>
+                </div>
+              </div>
+              <div className="bg-orange-100 p-2 rounded-lg">
+                <Flame className="w-5 h-5 text-orange-600" />
               </div>
             </div>
-            <div className="text-2xl mb-1">Top 15%</div>
-            <div className="text-sm text-gray-600">Xếp hạng phòng ban</div>
+            <p className="text-xs text-gray-500">liên tiếp</p>
+            <p className="text-xs text-orange-600 mt-1">🔥 Keep it up!</p>
           </div>
         </div>
 
+        {/* Main Content - Work Feed + AI Insights */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Performance Chart */}
-          <div className="lg:col-span-2 bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <h2 className="text-xl mb-6">Xu hướng hiệu suất</h2>
-            <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={performanceData}>
-                <defs>
-                  <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="month" stroke="#9ca3af" />
-                <YAxis stroke="#9ca3af" />
-                <Tooltip />
-                <Area 
-                  type="monotone" 
-                  dataKey="score" 
-                  stroke="#3b82f6" 
-                  fillOpacity={1} 
-                  fill="url(#colorScore)" 
-                  strokeWidth={2}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+          {/* Work Feed */}
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div className="mb-6">
+                <h2 className="text-xl mb-1">Công việc tuần này — tự động capture</h2>
+                <p className="text-sm text-gray-500">Không cần báo cáo. Dữ liệu từ Jira + Git.</p>
+              </div>
 
-          {/* Quick Actions */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <h2 className="text-xl mb-4">Hành động nhanh</h2>
-            <div className="space-y-3">
-              <button 
-                onClick={() => navigate('/employee/attendance')}
-                className="w-full p-4 bg-blue-50 rounded-lg text-left hover:bg-blue-100 transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <Clock className="w-5 h-5 text-blue-600" />
-                  <span>Chấm công</span>
-                </div>
-              </button>
-              <button 
-                onClick={() => navigate('/employee/performance')}
-                className="w-full p-4 bg-green-50 rounded-lg text-left hover:bg-green-100 transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <Target className="w-5 h-5 text-green-600" />
-                  <span>Cập nhật KPI</span>
-                </div>
-              </button>
-              <button 
-                onClick={() => navigate('/employee/attendance')}
-                className="w-full p-4 bg-purple-50 rounded-lg text-left hover:bg-purple-100 transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <Calendar className="w-5 h-5 text-purple-600" />
-                  <span>Đăng ký nghỉ phép</span>
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* AI Suggestions & Recent Activities */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* AI Suggestions */}
-          <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-6 border border-purple-100">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white text-sm">AI</span>
-              </div>
-              <h2 className="text-xl">Gợi ý AI cho bạn</h2>
-            </div>
-            <div className="space-y-3">
-              <div className="bg-white rounded-lg p-4">
-                <h3 className="mb-2">📈 Hiệu suất tăng trưởng tốt</h3>
-                <p className="text-sm text-gray-600">
-                  Bạn đã cải thiện 17% trong 6 tháng qua. Tiếp tục duy trì!
-                </p>
-              </div>
-              <div className="bg-white rounded-lg p-4">
-                <h3 className="mb-2">🎯 Kỹ năng nên phát triển</h3>
-                <p className="text-sm text-gray-600">
-                  Học React Advanced để đạt mục tiêu Senior Developer
-                </p>
-              </div>
-              <div className="bg-white rounded-lg p-4">
-                <h3 className="mb-2">⚡ Cơ hội thăng tiến</h3>
-                <p className="text-sm text-gray-600">
-                  Bạn đang ở top 15%. Thêm 2 kỹ năng nữa để đủ điều kiện Team Lead
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Recent Activities */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <h2 className="text-xl mb-4">Hoạt động gần đây</h2>
-            <div className="space-y-4">
-              {recentActivities.map((activity) => (
-                <div key={activity.id} className="flex gap-3">
-                  <div className="mt-1">
-                    {activity.type === 'success' && (
-                      <CheckCircle className="w-5 h-5 text-green-600" />
-                    )}
-                    {activity.type === 'info' && (
-                      <AlertCircle className="w-5 h-5 text-blue-600" />
-                    )}
-                    {activity.type === 'warning' && (
-                      <AlertCircle className="w-5 h-5 text-yellow-600" />
-                    )}
+              <div className="space-y-4">
+                {workItems.map((item, index) => (
+                  <div key={index} className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
+                    <div className="flex items-start gap-3">
+                      <div className={`${item.sourceBadgeColor} text-white text-xs px-2 py-1 rounded font-medium`}>
+                        {item.source}
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-sm mb-2">{item.task}</h3>
+                        <div className="flex flex-wrap items-center gap-2 text-xs">
+                          <span className={`${item.typeColor} px-2 py-1 rounded`}>{item.type}</span>
+                          {item.skills.map((skill, idx) => (
+                            <span key={idx} className="bg-gray-100 text-gray-700 px-2 py-1 rounded">
+                              {skill}
+                            </span>
+                          ))}
+                          <span className={`${item.difficultyColor} px-2 py-1 rounded`}>{item.difficulty}</span>
+                          <span className="text-gray-500">{item.timeSpent}</span>
+                          <span className="text-gray-700">• {item.impact}</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <p className="text-sm">{activity.message}</p>
-                    <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* AI Insights Panel */}
+          <div className="lg:col-span-1">
+            <div className="bg-gradient-to-br from-gray-900 to-slate-800 rounded-xl p-6 text-white shadow-lg">
+              <h2 className="text-lg mb-6">AI nhận thấy tuần này</h2>
+              
+              <div className="space-y-4 mb-6">
+                {aiInsights.map((insight, index) => (
+                  <div key={index} className="bg-white/10 rounded-lg p-4 backdrop-blur">
+                    <p className="text-sm leading-relaxed">
+                      <span className="text-lg mr-2">{insight.icon}</span>
+                      {insight.message}
+                    </p>
                   </div>
+                ))}
+              </div>
+
+              <div className="border-t border-white/20 pt-6">
+                <p className="text-sm text-gray-300 mb-3">Gợi ý hành động hôm nay</p>
+                <div className="space-y-2">
+                  <button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-3 px-4 rounded-lg transition-colors">
+                    Nhận task System Design tuần tới
+                  </button>
+                  <button className="w-full bg-white/10 hover:bg-white/20 text-white text-sm py-3 px-4 rounded-lg transition-colors">
+                    Tiếp tục khóa React Advanced (65% done)
+                  </button>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 }
