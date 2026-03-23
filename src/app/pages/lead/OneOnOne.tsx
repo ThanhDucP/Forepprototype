@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Calendar, Clock, ChevronDown, ChevronUp, Plus, X } from 'lucide-react';
 import { Dialog } from '../../components/Dialog';
+import Layout from '../../components/Layout';
 
 export default function OneOnOne() {
   const [expandedMeeting, setExpandedMeeting] = useState<number | null>(null);
@@ -94,7 +95,7 @@ export default function OneOnOne() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <Layout>
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -318,6 +319,6 @@ export default function OneOnOne() {
           </div>
         </Dialog>
       </div>
-    </div>
+    </Layout>
   );
 }

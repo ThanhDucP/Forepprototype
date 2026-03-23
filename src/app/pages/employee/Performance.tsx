@@ -1,5 +1,6 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { TrendingUp, Activity, FileText } from 'lucide-react';
+import Layout from '../../components/Layout';
 
 export default function Performance() {
   // Performance trend data
@@ -42,7 +43,7 @@ export default function Performance() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <Layout>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -186,6 +187,6 @@ export default function Performance() {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

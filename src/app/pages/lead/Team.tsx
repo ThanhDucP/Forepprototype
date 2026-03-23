@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Search, ChevronDown, ChevronUp, MessageSquare, Eye, Send } from 'lucide-react';
+import Layout from '../../components/Layout';
 
 export default function Team() {
   const [expandedMember, setExpandedMember] = useState<number | null>(null);
@@ -82,7 +83,7 @@ export default function Team() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <Layout>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -219,6 +220,6 @@ export default function Team() {
           ))}
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Plus, Edit, Link as LinkIcon } from 'lucide-react';
+import Layout from '../../components/Layout';
 
 export default function SkillFramework() {
   const [selectedRole, setSelectedRole] = useState('Frontend Dev');
@@ -94,7 +95,7 @@ export default function SkillFramework() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <Layout>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -225,6 +226,6 @@ export default function SkillFramework() {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
