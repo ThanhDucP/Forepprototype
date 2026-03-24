@@ -1,9 +1,14 @@
 import { useState } from 'react';
-import { Search, ChevronDown, ChevronUp, MessageSquare, Eye, Send } from 'lucide-react';
+import { useNavigate } from 'react-router';
+import { Search, ChevronDown, ChevronUp, MessageSquare, Eye, Send, X } from 'lucide-react';
 import Layout from '../../components/Layout';
+import { Dialog } from '../../components/Dialog';
 
 export default function Team() {
+  const navigate = useNavigate();
   const [expandedMember, setExpandedMember] = useState<number | null>(null);
+  const [feedbackDialog, setFeedbackDialog] = useState<{ open: boolean; memberId: number | null; memberName: string }>({ open: false, memberId: null, memberName: '' });
+  const [feedbackText, setFeedbackText] = useState('');
 
   const teamMembers = [
     {
@@ -80,6 +85,31 @@ export default function Team() {
 
   const toggleExpand = (memberId: number) => {
     setExpandedMember(expandedMember === memberId ? null : memberId);
+  };
+
+  const handleSchedule1v1 = (memberId: number) => {
+    navigate('/lead/one-on-one', { state: { selectedMemberId: memberId } });
+  };
+
+  const handleViewWorkProfile = (memberId: number) => {
+    navigate(`/lead/employee/${memberId}`);
+  };
+
+  const handleOpenFeedback = (memberId: number, memberName: string) => {
+    setFeedbackDialog({ open: true, memberId, memberName });
+    setFeedbackText('');
+  };
+
+  const handleCloseFeedback = () => {
+    setFeedbackDialog({ open: false, memberId: null, memberName: '' });
+    setFeedbackText('');
+  };
+
+  const handleSendFeedback = () => {
+    // In a real app, this would send the feedback to a backend
+    console.log(`Feedback for ${feedbackDialog.memberName}:`, feedbackText);
+    handleCloseFeedback();
+    alert(`Feedback sent to ${feedbackDialog.memberName}!`);
   };
 
   return (
@@ -199,15 +229,24 @@ export default function Team() {
                       </div>
 
                       <div className="space-y-2">
-                        <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 text-sm">
+                        <button
+                          onClick={() => handleSchedule1v1(member.id)}
+                          className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 text-sm"
+                        >
                           <MessageSquare className="w-4 h-4" />
                           Đặt lịch 1:1
                         </button>
-                        <button className="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-sm">
+                        <button
+                          onClick={() => handleViewWorkProfile(member.id)}
+                          className="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-sm"
+                        >
                           <Eye className="w-4 h-4" />
                           Xem Work Profile đầy đủ
                         </button>
-                        <button className="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-sm">
+                        <button
+                          onClick={() => handleOpenFeedback(member.id, member.name)}
+                          className="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-sm"
+                        >
                           <Send className="w-4 h-4" />
                           Gửi feedback
                         </button>
@@ -219,6 +258,52 @@ export default function Team() {
             </div>
           ))}
         </div>
+
+        {/* Feedback Dialog */}
+        <Dialog open={feedbackDialog.open} onClose={handleCloseFeedback}>
+          <div className="bg-white rounded-xl p-6 max-w-md w-full">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl">Gửi Feedback</h2>
+              <button
+                onClick={handleCloseFeedback}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <p className="text-gray-700 mb-4">
+                Bạn đang gửi feedback cho: <span className="font-semibold">{feedbackDialog.memberName}</span>
+              </p>
+
+              <label className="block text-sm font-medium mb-2">Nội dung feedback</label>
+              <textarea
+                value={feedbackText}
+                onChange={(e) => setFeedbackText(e.target.value)}
+                placeholder="Nhập feedback của bạn..."
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                rows={5}
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={handleSendFeedback}
+                disabled={!feedbackText.trim()}
+                className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Gửi Feedback
+              </button>
+              <button
+                onClick={handleCloseFeedback}
+                className="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Hủy
+              </button>
+            </div>
+          </div>
+        </Dialog>
       </div>
     </Layout>
   );
