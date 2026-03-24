@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Plus, Eye, Edit, X, CheckCircle, TrendingUp } from 'lucide-react';
 import { Dialog } from '../../components/Dialog';
+import Layout from '../../components/Layout';
 
 export default function Programs() {
   const [showNewProgramDialog, setShowNewProgramDialog] = useState(false);
@@ -135,7 +136,7 @@ export default function Programs() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <Layout>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -360,6 +361,6 @@ export default function Programs() {
           </div>
         </Dialog>
       </div>
-    </div>
+    </Layout>
   );
 }

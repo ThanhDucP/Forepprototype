@@ -1,4 +1,5 @@
 import { BookOpen, Play, CheckCircle, Flame, TrendingUp } from 'lucide-react';
+import Layout from '../../components/Layout';
 
 export default function Learning() {
   const recommendedCourses = [
@@ -65,7 +66,7 @@ export default function Learning() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <Layout>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -217,6 +218,6 @@ export default function Learning() {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

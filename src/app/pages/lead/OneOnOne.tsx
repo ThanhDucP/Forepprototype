@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router';
 import { Calendar, Clock, ChevronDown, ChevronUp, Plus, X } from 'lucide-react';
 import { Dialog } from '../../components/Dialog';
+import Layout from '../../components/Layout';
 
 export default function OneOnOne() {
+  const location = useLocation();
   const [expandedMeeting, setExpandedMeeting] = useState<number | null>(null);
   const [showNewMeetingDialog, setShowNewMeetingDialog] = useState(false);
   const [formData, setFormData] = useState({
@@ -12,6 +15,21 @@ export default function OneOnOne() {
     reason: '',
     notes: ''
   });
+
+  // Get team members list
+  const teamMembers = ['Nguyễn Văn An', 'Trần Thị Bảo', 'Lê Văn Cường', 'Phạm Thị Dung', 'Hoàng Văn Em'];
+
+  // Handle pre-selection from Team page
+  useEffect(() => {
+    const state = location.state as { selectedMemberId?: number } | undefined;
+    if (state?.selectedMemberId) {
+      const selectedMember = teamMembers[state.selectedMemberId - 1];
+      if (selectedMember) {
+        setFormData(prev => ({ ...prev, employee: selectedMember }));
+        setShowNewMeetingDialog(true);
+      }
+    }
+  }, [location.state]);
 
   const upcomingMeetings = [
     {
@@ -79,8 +97,6 @@ export default function OneOnOne() {
     }
   ];
 
-  const teamMembers = ['Nguyễn Văn An', 'Trần Thị Bảo', 'Lê Văn Cường', 'Phạm Thị Dung', 'Hoàng Văn Em'];
-
   const toggleExpand = (meetingId: number) => {
     setExpandedMeeting(expandedMeeting === meetingId ? null : meetingId);
   };
@@ -94,7 +110,7 @@ export default function OneOnOne() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <Layout>
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -318,6 +334,6 @@ export default function OneOnOne() {
           </div>
         </Dialog>
       </div>
-    </div>
+    </Layout>
   );
 }

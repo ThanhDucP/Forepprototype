@@ -1,5 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, ArrowUp, ArrowRight } from 'lucide-react';
+import Layout from '../../components/Layout';
 
 export default function WorkProfile() {
   // Task breakdown data
@@ -42,7 +43,7 @@ export default function WorkProfile() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <Layout>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -182,6 +183,6 @@ export default function WorkProfile() {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

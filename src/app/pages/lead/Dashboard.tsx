@@ -1,6 +1,7 @@
 import { Users, TrendingUp, AlertCircle, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { LineChart, Line, ResponsiveContainer } from 'recharts';
+import Layout from '../../components/Layout';
 
 export default function LeadDashboard() {
   const navigate = useNavigate();
@@ -109,7 +110,7 @@ export default function LeadDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <Layout>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -273,6 +274,6 @@ export default function LeadDashboard() {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
