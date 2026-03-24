@@ -1,7 +1,10 @@
-import { BookOpen, Play, CheckCircle, Flame, TrendingUp } from 'lucide-react';
+import { useState } from 'react';
+import { BookOpen, Play, CheckCircle, Flame, TrendingUp, X } from 'lucide-react';
 import Layout from '../../components/Layout';
+import { Dialog } from '../../components/Dialog';
 
 export default function Learning() {
+  const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const recommendedCourses = [
     {
       priority: 'high',
@@ -149,7 +152,10 @@ export default function Learning() {
                       </span>
                     </div>
                   </div>
-                  <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap">
+                  <button
+                    onClick={() => setSelectedCourse(course)}
+                    className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+                  >
                     Bắt đầu học
                   </button>
                 </div>
@@ -182,7 +188,10 @@ export default function Learning() {
                     </div>
                     <p className="text-sm text-gray-600 italic">{course.currentStatus}</p>
                   </div>
-                  <button className="bg-gray-100 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-200 transition-colors ml-4">
+                  <button
+                    onClick={() => setSelectedCourse(course)}
+                    className="bg-gray-100 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-200 transition-colors ml-4"
+                  >
                     Tiếp tục
                   </button>
                 </div>
@@ -217,6 +226,59 @@ export default function Learning() {
             ))}
           </div>
         </div>
+
+        {/* Course Detail Dialog */}
+        <Dialog open={!!selectedCourse} onClose={() => setSelectedCourse(null)}>
+          {selectedCourse && (
+            <div className="bg-white rounded-xl p-6 max-w-md w-full">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl">{selectedCourse.title}</h2>
+                <button
+                  onClick={() => setSelectedCourse(null)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="space-y-4 mb-6">
+                <div>
+                  <p className="text-sm text-gray-600">Provider</p>
+                  <p className="font-medium">{selectedCourse.provider}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Duration</p>
+                  <p className="font-medium">{selectedCourse.duration}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Skill Development</p>
+                  <p className="font-medium">{selectedCourse.skillGap}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 mb-2">Reason</p>
+                  <p className="text-sm bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                    {selectedCourse.reason || selectedCourse.currentStatus}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setSelectedCourse(null)}
+                  className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Bắt đầu/Tiếp tục học
+                </button>
+                <button
+                  onClick={() => setSelectedCourse(null)}
+                  className="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  Đóng
+                </button>
+              </div>
+            </div>
+          )}
+        </Dialog>
       </div>
     </Layout>
   );

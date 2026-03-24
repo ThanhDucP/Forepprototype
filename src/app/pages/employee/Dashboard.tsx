@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router';
 import { TrendingUp, Activity, Layers, Flame } from 'lucide-react';
 import Layout from '../../components/Layout';
 
 export default function EmployeeDashboard() {
+  const navigate = useNavigate();
   // Mock data for work items
   const workItems = [
     {
@@ -217,10 +219,16 @@ export default function EmployeeDashboard() {
               <div className="border-t border-white/20 pt-6">
                 <p className="text-sm text-gray-300 mb-3">Gợi ý hành động hôm nay</p>
                 <div className="space-y-2">
-                  <button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-3 px-4 rounded-lg transition-colors">
+                  <button
+                    onClick={() => navigate('/employee/career')}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-3 px-4 rounded-lg transition-colors"
+                  >
                     Nhận task System Design tuần tới
                   </button>
-                  <button className="w-full bg-white/10 hover:bg-white/20 text-white text-sm py-3 px-4 rounded-lg transition-colors">
+                  <button
+                    onClick={() => navigate('/employee/learning')}
+                    className="w-full bg-white/10 hover:bg-white/20 text-white text-sm py-3 px-4 rounded-lg transition-colors"
+                  >
                     Tiếp tục khóa React Advanced (65% done)
                   </button>
                 </div>

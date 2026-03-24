@@ -1,11 +1,15 @@
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import Layout from '../../components/Layout';
-import { ArrowLeft, TrendingUp, Activity, Layers, FileText, MessageSquare } from 'lucide-react';
+import { Dialog } from '../../components/Dialog';
+import { ArrowLeft, TrendingUp, Activity, Layers, FileText, MessageSquare, X } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 
 export default function EmployeeWorkProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
+  const [feedbackText, setFeedbackText] = useState('');
 
   // Mock employee data - in a real app, this would come from params or API
   const employeeData = {
@@ -351,15 +355,72 @@ export default function EmployeeWorkProfile() {
 
         {/* Action Buttons */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          <button className="bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+          <button
+            onClick={() => navigate('/lead/one-on-one', { state: { selectedMemberId: employeeData.id } })}
+            className="bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+          >
             <MessageSquare className="w-5 h-5" />
             Schedule 1:1 Meeting
           </button>
-          <button className="bg-gray-600 text-white py-3 px-6 rounded-lg hover:bg-gray-700 transition-colors flex items-center justify-center gap-2">
+          <button
+            onClick={() => setShowFeedbackDialog(true)}
+            className="bg-gray-600 text-white py-3 px-6 rounded-lg hover:bg-gray-700 transition-colors flex items-center justify-center gap-2"
+          >
             <FileText className="w-5 h-5" />
             Send Feedback
           </button>
         </div>
+
+        {/* Feedback Dialog */}
+        <Dialog open={showFeedbackDialog} onClose={() => setShowFeedbackDialog(false)}>
+          <div className="bg-white rounded-xl p-6 max-w-md w-full">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl">Send Feedback</h2>
+              <button
+                onClick={() => setShowFeedbackDialog(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <p className="text-gray-700 mb-4">
+                Sending feedback to: <span className="font-semibold">{employeeData.name}</span>
+              </p>
+
+              <label className="block text-sm font-medium mb-2">Feedback</label>
+              <textarea
+                value={feedbackText}
+                onChange={(e) => setFeedbackText(e.target.value)}
+                placeholder="Share your feedback..."
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                rows={5}
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  console.log(`Feedback for ${employeeData.name}:`, feedbackText);
+                  setShowFeedbackDialog(false);
+                  setFeedbackText('');
+                  alert(`Feedback sent to ${employeeData.name}!`);
+                }}
+                disabled={!feedbackText.trim()}
+                className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Send
+              </button>
+              <button
+                onClick={() => setShowFeedbackDialog(false)}
+                className="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </Dialog>
       </div>
     </Layout>
   );
