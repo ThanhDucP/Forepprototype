@@ -15,6 +15,7 @@ import CareerPath from "./pages/employee/Career";
 import LeadDashboard from "./pages/lead/Dashboard";
 import LeadTeam from "./pages/lead/Team";
 import OneOnOne from "./pages/lead/OneOnOne";
+import EmployeeWorkProfile from "./pages/lead/EmployeeWorkProfile";
 
 // HR pages
 import HRDashboard from "./pages/hr/Dashboard";
@@ -46,6 +47,7 @@ export const router = createBrowserRouter([
       { path: "lead/dashboard", Component: LeadDashboard },
       { path: "lead/team", Component: LeadTeam },
       { path: "lead/one-on-one", Component: OneOnOne },
+      { path: "lead/employee/:id", Component: EmployeeWorkProfile },
       
       // HR routes
       { path: "hr/dashboard", Component: HRDashboard },

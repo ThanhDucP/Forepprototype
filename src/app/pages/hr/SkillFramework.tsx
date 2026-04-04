@@ -1,8 +1,13 @@
 import { useState } from 'react';
-import { Plus, Edit, Link as LinkIcon } from 'lucide-react';
+import { Plus, Edit, Link as LinkIcon, X } from 'lucide-react';
+import Layout from '../../components/Layout';
+import { Dialog } from '../../components/Dialog';
 
 export default function SkillFramework() {
   const [selectedRole, setSelectedRole] = useState('Frontend Dev');
+  const [showAddSkillDialog, setShowAddSkillDialog] = useState(false);
+  const [selectedSkill, setSelectedSkill] = useState<any>(null);
+  const [showLinkCourseDialog, setShowLinkCourseDialog] = useState(false);
 
   const roles = ['Frontend Dev', 'Backend Dev', 'QA', 'DevOps', 'Designer', 'Product Manager'];
 
@@ -94,7 +99,7 @@ export default function SkillFramework() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <Layout>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -102,7 +107,10 @@ export default function SkillFramework() {
             <h1 className="text-3xl mb-2">Skill Framework</h1>
             <p className="text-gray-600">Định nghĩa kỳ vọng kỹ năng cho từng role và level</p>
           </div>
-          <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+          <button
+            onClick={() => setShowAddSkillDialog(true)}
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+          >
             <Plus className="w-5 h-5" />
             Add Skill
           </button>
@@ -136,7 +144,10 @@ export default function SkillFramework() {
                     <div key={skillIdx} className="border border-gray-200 rounded-lg p-5">
                       <div className="flex items-center justify-between mb-4">
                         <h3 className="text-lg">{skill.name}</h3>
-                        <button className="text-blue-600 hover:text-blue-700 p-2 hover:bg-blue-50 rounded-lg transition-colors">
+                        <button
+                          onClick={() => setSelectedSkill(skill)}
+                          className="text-blue-600 hover:text-blue-700 p-2 hover:bg-blue-50 rounded-lg transition-colors"
+                        >
                           <Edit className="w-4 h-4" />
                         </button>
                       </div>
@@ -205,7 +216,10 @@ export default function SkillFramework() {
         <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm mt-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl">Liên kết với khóa học</h2>
-            <button className="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-2">
+            <button
+              onClick={() => setShowLinkCourseDialog(true)}
+              className="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-2"
+            >
               <LinkIcon className="w-4 h-4" />
               Link Course
             </button>
@@ -219,12 +233,133 @@ export default function SkillFramework() {
                   </p>
                   <p className="text-sm text-gray-600">→ {item.course} <span className="text-gray-400">({item.provider})</span></p>
                 </div>
-                <button className="text-sm text-gray-500 hover:text-gray-700">Edit</button>
+                <button
+                  onClick={() => setShowLinkCourseDialog(true)}
+                  className="text-sm text-gray-500 hover:text-gray-700"
+                >
+                  Edit
+                </button>
               </div>
             ))}
           </div>
         </div>
+
+        {/* Add Skill Dialog */}
+        <Dialog open={showAddSkillDialog} onClose={() => setShowAddSkillDialog(false)}>
+          <div className="bg-white rounded-xl p-6 max-w-md w-full">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl">Add New Skill</h2>
+              <button
+                onClick={() => setShowAddSkillDialog(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); setShowAddSkillDialog(false); alert('Skill added!'); }}>
+              <div>
+                <label className="block text-sm font-medium mb-2">Skill Name</label>
+                <input type="text" placeholder="e.g., React" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Domain</label>
+                <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option>Core Technical</option>
+                  <option>Architecture</option>
+                  <option>Soft Skills</option>
+                </select>
+              </div>
+              <div className="flex gap-3 pt-4">
+                <button type="submit" className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                  Add Skill
+                </button>
+                <button type="button" onClick={() => setShowAddSkillDialog(false)} className="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 transition-colors">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </Dialog>
+
+        {/* Edit Skill Dialog */}
+        <Dialog open={!!selectedSkill} onClose={() => setSelectedSkill(null)}>
+          {selectedSkill && (
+            <div className="bg-white rounded-xl p-6 max-w-md w-full">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl">Edit Skill</h2>
+                <button
+                  onClick={() => setSelectedSkill(null)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); setSelectedSkill(null); alert('Skill updated!'); }}>
+                <div>
+                  <label className="block text-sm font-medium mb-2">L1 Description</label>
+                  <input type="text" defaultValue={selectedSkill.l1} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">L2 Description</label>
+                  <input type="text" defaultValue={selectedSkill.l2} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <div className="flex gap-3 pt-4">
+                  <button type="submit" className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    Save
+                  </button>
+                  <button type="button" onClick={() => setSelectedSkill(null)} className="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 transition-colors">
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
+        </Dialog>
+
+        {/* Link Course Dialog */}
+        <Dialog open={showLinkCourseDialog} onClose={() => setShowLinkCourseDialog(false)}>
+          <div className="bg-white rounded-xl p-6 max-w-md w-full">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl">Link Skill to Course</h2>
+              <button
+                onClick={() => setShowLinkCourseDialog(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); setShowLinkCourseDialog(false); alert('Course linked!'); }}>
+              <div>
+                <label className="block text-sm font-medium mb-2">Skill Gap</label>
+                <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option>React L3→L4</option>
+                  <option>System Design L2→L4</option>
+                  <option>TypeScript L2→L3</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Course</label>
+                <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option>React Advanced Patterns</option>
+                  <option>System Design Fundamentals</option>
+                  <option>TypeScript Deep Dive</option>
+                </select>
+              </div>
+              <div className="flex gap-3 pt-4">
+                <button type="submit" className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                  Link
+                </button>
+                <button type="button" onClick={() => setShowLinkCourseDialog(false)} className="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 transition-colors">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </Dialog>
       </div>
-    </div>
+    </Layout>
   );
 }

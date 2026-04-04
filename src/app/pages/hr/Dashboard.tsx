@@ -1,7 +1,10 @@
+import { useNavigate } from 'react-router';
 import { Users, BookOpen, Layers, TrendingUp, AlertCircle, CheckCircle } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import Layout from '../../components/Layout';
 
 export default function HRDashboard() {
+  const navigate = useNavigate();
   const programs = [
     {
       name: 'React Advanced Q1',
@@ -60,7 +63,7 @@ export default function HRDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <Layout>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -193,17 +196,26 @@ export default function HRDashboard() {
         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-6 text-white">
           <h2 className="text-xl mb-4">Quick Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <button className="bg-white/20 hover:bg-white/30 backdrop-blur rounded-lg p-4 text-left transition-colors">
+            <button
+              onClick={() => navigate('/hr/programs')}
+              className="bg-white/20 hover:bg-white/30 backdrop-blur rounded-lg p-4 text-left transition-colors"
+            >
               <BookOpen className="w-6 h-6 mb-2" />
               <p className="text-sm mb-1">Create Training Program</p>
               <p className="text-xs opacity-75">Set up new learning initiative</p>
             </button>
-            <button className="bg-white/20 hover:bg-white/30 backdrop-blur rounded-lg p-4 text-left transition-colors">
+            <button
+              onClick={() => navigate('/hr/skill-framework')}
+              className="bg-white/20 hover:bg-white/30 backdrop-blur rounded-lg p-4 text-left transition-colors"
+            >
               <Layers className="w-6 h-6 mb-2" />
               <p className="text-sm mb-1">Update Skill Framework</p>
               <p className="text-xs opacity-75">Modify skill requirements</p>
             </button>
-            <button className="bg-white/20 hover:bg-white/30 backdrop-blur rounded-lg p-4 text-left transition-colors">
+            <button
+              onClick={() => navigate('/hr/employees')}
+              className="bg-white/20 hover:bg-white/30 backdrop-blur rounded-lg p-4 text-left transition-colors"
+            >
               <Users className="w-6 h-6 mb-2" />
               <p className="text-sm mb-1">View All Employees</p>
               <p className="text-xs opacity-75">Access employee database</p>
@@ -211,6 +223,6 @@ export default function HRDashboard() {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

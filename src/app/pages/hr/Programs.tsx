@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { Plus, Eye, Edit, X, CheckCircle, TrendingUp } from 'lucide-react';
 import { Dialog } from '../../components/Dialog';
+import Layout from '../../components/Layout';
 
 export default function Programs() {
   const [showNewProgramDialog, setShowNewProgramDialog] = useState(false);
+  const [selectedProgram, setSelectedProgram] = useState<any>(null);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -135,7 +138,7 @@ export default function Programs() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <Layout>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -201,11 +204,23 @@ export default function Programs() {
                 </div>
 
                 <div className="flex gap-2">
-                  <button className="flex-1 bg-blue-50 text-blue-700 py-2 rounded-lg hover:bg-blue-100 transition-colors flex items-center justify-center gap-2 text-sm">
+                  <button
+                    onClick={() => {
+                      setSelectedProgram(program);
+                      setIsEditMode(false);
+                    }}
+                    className="flex-1 bg-blue-50 text-blue-700 py-2 rounded-lg hover:bg-blue-100 transition-colors flex items-center justify-center gap-2 text-sm"
+                  >
                     <Eye className="w-4 h-4" />
                     Chi tiết
                   </button>
-                  <button className="flex-1 bg-gray-50 text-gray-700 py-2 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 text-sm">
+                  <button
+                    onClick={() => {
+                      setSelectedProgram(program);
+                      setIsEditMode(true);
+                    }}
+                    className="flex-1 bg-gray-50 text-gray-700 py-2 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 text-sm"
+                  >
                     <Edit className="w-4 h-4" />
                     Sửa
                   </button>
@@ -266,6 +281,75 @@ export default function Programs() {
             ))}
           </div>
         </div>
+
+        {/* Program Detail/Edit Dialog */}
+        <Dialog open={!!selectedProgram} onClose={() => setSelectedProgram(null)}>
+          {selectedProgram && (
+            <div className="bg-white rounded-xl p-6 max-w-md w-full">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl">{selectedProgram.name}</h2>
+                <button
+                  onClick={() => setSelectedProgram(null)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="space-y-4 mb-6">
+                <div>
+                  <label className="text-sm font-medium">Description</label>
+                  <p className="text-gray-700 mt-1">{selectedProgram.description}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Target Role</label>
+                  <p className="text-gray-700 mt-1">{selectedProgram.targetRole}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Target Skill</label>
+                  <p className="text-gray-700 mt-1">{selectedProgram.targetSkill}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Duration</label>
+                  <p className="text-gray-700 mt-1">{selectedProgram.duration}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Participants</label>
+                  <p className="text-gray-700 mt-1">{selectedProgram.participants}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Completion</label>
+                  <div className="flex items-center gap-3 mt-1">
+                    <div className="flex-1 bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-blue-600 h-2 rounded-full"
+                        style={{ width: `${selectedProgram.completion}%` }}
+                      ></div>
+                    </div>
+                    <span className="text-sm text-gray-600">{selectedProgram.completion}%</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                {isEditMode && (
+                  <button
+                    onClick={() => setSelectedProgram(null)}
+                    className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Save Changes
+                  </button>
+                )}
+                <button
+                  onClick={() => setSelectedProgram(null)}
+                  className="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  {isEditMode ? 'Cancel' : 'Close'}
+                </button>
+              </div>
+            </div>
+          )}
+        </Dialog>
 
         {/* New Program Dialog */}
         <Dialog open={showNewProgramDialog} onClose={() => setShowNewProgramDialog(false)}>
@@ -360,6 +444,6 @@ export default function Programs() {
           </div>
         </Dialog>
       </div>
-    </div>
+    </Layout>
   );
 }
